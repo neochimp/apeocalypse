@@ -51,6 +51,7 @@ public class UnitController : MonoBehaviour
       rb.gravityScale = 0f;
       spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
+
       //first idle frame
       if(idleFrames != null && idleFrames.Length > 0){
         spriteRenderer.sprite = idleFrames[0];
@@ -112,8 +113,17 @@ public class UnitController : MonoBehaviour
     }
 
     public void TakeDamage(float amount){
-      StartCoroutine(DamageFlash(amount));
+      StartCoroutine(Flash(amount, Color.red));
       if(currentHealth <= 0) Die();
+    }
+
+    public void HealDamage(float amount){
+      if(currentHealth < maxHealth){  
+        StartCoroutine(Flash(amount, Color.green));
+      }
+      if(currentHealth > maxHealth){
+        currentHealth = maxHealth;
+      }
     }
 
     void Die(){
@@ -215,10 +225,10 @@ public class UnitController : MonoBehaviour
       spriteRenderer.sprite = attackFrames[0];
     }
 
-    IEnumerator DamageFlash(float amount){
+    IEnumerator Flash(float amount, Color color){
       yield return new WaitForSeconds(0.25f);
       currentHealth -= amount;
-      spriteRenderer.color = Color.red;
+      spriteRenderer.color = color;
       yield return new WaitForSeconds(0.1f);
       spriteRenderer.color = Color.white;
 
