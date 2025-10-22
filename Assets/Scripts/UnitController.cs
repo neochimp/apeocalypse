@@ -1,6 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum TargetType{
+  Closest,      //default behavior
+  Farthest,     //not implemented
+  LowestHealth,
+  HighestHealth, //not implemented
+  MostDamaged
+}
+
+
 public class UnitController : MonoBehaviour
 {
 
@@ -11,7 +21,9 @@ public class UnitController : MonoBehaviour
     public float moveSpeed = 2f;
 
     [Header("Health")]
-    public int maxHealth = 100;
+    public float maxHealth = 100;
+    public float currentHealth;
+
 
     [Header("Animation Frames")]
     public Sprite[] idleFrames;
@@ -21,6 +33,7 @@ public class UnitController : MonoBehaviour
     public bool spriteFacesLeft = false;
 
     public AttackBehavior attackBehavior; //unique to each unit
+    public TargetType targetBehavior;
 
     private Rigidbody2D rb;
     private Transform target;
@@ -32,8 +45,7 @@ public class UnitController : MonoBehaviour
     private int attackFrame;
     private int currentFrame;
     private float timer;
-    private float currentHealth;
-
+   
     void Awake(){
       rb = GetComponent<Rigidbody2D>();
       rb.gravityScale = 0f;
@@ -72,6 +84,7 @@ public class UnitController : MonoBehaviour
       float desiredRange = attackBehavior ? attackBehavior.Range : 0.5f;
 
       if(dist > desiredRange){
+
         Vector2 dir = (target.position - transform.position).normalized;
         rb.velocity = dir * moveSpeed;
 
@@ -114,10 +127,28 @@ public class UnitController : MonoBehaviour
       float best = Mathf.Infinity;
 
       foreach(var e in enemies){
-        float d = Vector2.Distance(transform.position, e.transform.position);
-        if(d < best){
-          best = d;
-          nearest = e.transform;
+        if(targetBehavior == TargetType.Closest){
+          float d = Vector2.Distance(transform.position, e.transform.position);
+          if(d < best){
+            best = d;
+            nearest = e.transform;
+          }
+        }
+
+        if(targetBehavior == TargetType.LowestHealth){
+          var enemy = e.GetComponent<UnitController>();
+          if(enemy.currentHealth < best){
+            best = enemy.currentHealth;
+            nearest = e.transform;
+          }
+        }
+
+        if(targetBehavior == TargetType.MostDamaged){
+          var enemy = e.GetComponent<UnitController>();
+          if((enemy.currentHealth/enemy.maxHealth) < best){
+            best = (enemy.currentHealth/enemy.maxHealth);
+            nearest = e.transform;
+          }
         }
       }
       

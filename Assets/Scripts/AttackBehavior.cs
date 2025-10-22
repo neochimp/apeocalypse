@@ -27,7 +27,7 @@ public abstract class AttackBehavior : MonoBehaviour{
   }
 
   protected virtual bool IsInRange(Transform target){
-    return (target.position - transform.position).sqrMagnitude <= Range * Range;
+    return (transform.position - target.position).sqrMagnitude <= Range * Range;
   }
 
   protected abstract void PerformAttack(Transform target);
