@@ -72,9 +72,9 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-      if(target == null || !target.gameObject.activeInHierarchy){
-        target = FindNearestEnemy();
-      }
+      if(currentHealth <= 0) Die();
+      target = FindNearestEnemy();
+      attackBehavior.SetTarget(target);
 
       if(!target){
         rb.velocity = Vector2.zero;
@@ -114,7 +114,6 @@ public class UnitController : MonoBehaviour
 
     public void TakeDamage(float amount){
       StartCoroutine(Flash(amount, Color.red));
-      if(currentHealth <= 0) Die();
     }
 
     public void HealDamage(float amount){

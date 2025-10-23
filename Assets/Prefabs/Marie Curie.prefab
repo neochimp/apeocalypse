@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6298882990025620067
+--- !u!1 &4724873348794788110
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,40 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2734846758055543982}
-  - component: {fileID: 9218433831366340614}
-  - component: {fileID: 8430034358405605200}
-  - component: {fileID: 4421794233688539456}
-  - component: {fileID: 1692937975278240646}
+  - component: {fileID: 5364657525702345237}
+  - component: {fileID: 6927683429420302732}
+  - component: {fileID: 3812302708556096639}
+  - component: {fileID: 3440957084977803561}
+  - component: {fileID: 1568098156343104300}
   m_Layer: 3
-  m_Name: Muhammed Ali
+  m_Name: Marie Curie
   m_TagString: Human
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2734846758055543982
+--- !u!4 &5364657525702345237
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6298882990025620067}
+  m_GameObject: {fileID: 4724873348794788110}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.3, y: -1.85, z: 0}
+  m_LocalPosition: {x: 7.29, y: -1.39, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &9218433831366340614
+--- !u!212 &6927683429420302732
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6298882990025620067}
+  m_GameObject: {fileID: 4724873348794788110}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -797723551, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
+  m_Sprite: {fileID: -1031654627, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
@@ -87,43 +87,43 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &8430034358405605200
+--- !u!114 &3812302708556096639
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6298882990025620067}
+  m_GameObject: {fileID: 4724873348794788110}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a45169872491855a99b2f342f24c1717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTag: Gorilla
-  moveSpeed: 4
-  maxHealth: 15
-  currentHealth: 0
+  targetTag: Human
+  moveSpeed: 2
+  maxHealth: 5
+  currentHealth: 5
   idleFrames:
-  - {fileID: -797723551, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
-  - {fileID: -797723551, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
-  - {fileID: -797723551, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
-  - {fileID: -1574508580, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
-  - {fileID: -1574508580, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
-  - {fileID: -1574508580, guid: a1eb77822ccf06d888b4cce0a1b88c72, type: 3}
+  - {fileID: -1031654627, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
+  - {fileID: -1031654627, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
+  - {fileID: -1031654627, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
+  - {fileID: 1810538818, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
+  - {fileID: 1810538818, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
+  - {fileID: 1810538818, guid: 2b75ee86ce0bf6917a843703c4d07988, type: 3}
   walkFrames: []
   attackFrames: []
   frameRate: 0.1
   spriteFacesLeft: 0
-  attackBehavior: {fileID: 1692937975278240646}
-  targetBehavior: 0
---- !u!50 &4421794233688539456
+  attackBehavior: {fileID: 1568098156343104300}
+  targetBehavior: 4
+--- !u!50 &3440957084977803561
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6298882990025620067}
+  m_GameObject: {fileID: 4724873348794788110}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -143,21 +143,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &1692937975278240646
+--- !u!114 &1568098156343104300
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6298882990025620067}
+  m_GameObject: {fileID: 4724873348794788110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb2e2f8d032b8c891b987fa04653eb8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ecf07ed6166891da8dc079850457425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Range: 0.5
-  Cooldown: 0.8
-  damage: 2
+  Range: 1.5
+  Cooldown: 3
+  damage: -2
   lungeDistance: 0.25
   lungeSpeed: 10
   returnSpeed: 10

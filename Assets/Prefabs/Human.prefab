@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 528131094432371469}
   - component: {fileID: 6769538126594798723}
   - component: {fileID: 7221372422008939205}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Human
   m_TagString: Human
   m_Icon: {fileID: 0}
@@ -102,6 +102,7 @@ MonoBehaviour:
   targetTag: Gorilla
   moveSpeed: 2
   maxHealth: 5
+  currentHealth: 0
   idleFrames:
   - {fileID: -1985934640, guid: 55c7eb5c967d7deed952ff4601e0a907, type: 3}
   - {fileID: -1985934640, guid: 55c7eb5c967d7deed952ff4601e0a907, type: 3}
@@ -120,6 +121,7 @@ MonoBehaviour:
   frameRate: 0.1
   spriteFacesLeft: 0
   attackBehavior: {fileID: 7221372422008939205}
+  targetBehavior: 0
 --- !u!50 &6769538126594798723
 Rigidbody2D:
   serializedVersion: 4

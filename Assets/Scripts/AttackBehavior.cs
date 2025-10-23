@@ -6,6 +6,7 @@ public abstract class AttackBehavior : MonoBehaviour{
   public float Range = 0.5f;
   public float Cooldown = 1f;
   protected float cdTimer;
+  protected Transform target;
   
   public void Tick(float dt){
     if(cdTimer > 0f) cdTimer -= dt;
@@ -24,6 +25,10 @@ public abstract class AttackBehavior : MonoBehaviour{
     if(controller) controller.StartAttackAnimation();
     
     return true;
+  }
+
+  public void SetTarget(Transform received){
+    target = received;
   }
 
   protected virtual bool IsInRange(Transform target){

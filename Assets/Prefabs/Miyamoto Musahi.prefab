@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8493104504718010311}
   - component: {fileID: 1349893870799380474}
   - component: {fileID: 6066883233631805942}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Miyamoto Musahi
   m_TagString: Human
   m_Icon: {fileID: 0}
@@ -102,6 +102,7 @@ MonoBehaviour:
   targetTag: Gorilla
   moveSpeed: 4
   maxHealth: 10
+  currentHealth: 0
   idleFrames:
   - {fileID: -129197683, guid: 3f961739295b055018da7024274c17b5, type: 3}
   - {fileID: -129197683, guid: 3f961739295b055018da7024274c17b5, type: 3}
@@ -114,6 +115,7 @@ MonoBehaviour:
   frameRate: 0.1
   spriteFacesLeft: 0
   attackBehavior: {fileID: 6066883233631805942}
+  targetBehavior: 0
 --- !u!50 &1349893870799380474
 Rigidbody2D:
   serializedVersion: 4
