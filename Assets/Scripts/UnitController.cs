@@ -30,10 +30,10 @@ public class UnitController : MonoBehaviour
     public Sprite[] walkFrames;
     public Sprite[] attackFrames;
     public float frameRate = 0.1f;
-    public bool spriteFacesLeft = false;
+    public bool spriteFacesLeft = false;  //used to correcet left and right facing depending on sprite
 
     public AttackBehavior attackBehavior; //unique to each unit
-    public TargetType targetBehavior;
+    public TargetType targetBehavior; //see enum above
 
     private Rigidbody2D rb;
     private Transform target;
@@ -42,11 +42,12 @@ public class UnitController : MonoBehaviour
 
     private bool isMoving;
     private bool isAttacking;
-    private float attackAnimTimer;
+    private float attackAnimTimer;  //timer for attack animation
     private int attackFrame;
     private int currentFrame;
     private float timer;
    
+    //basic instantiations
     void Awake(){
       rb = GetComponent<Rigidbody2D>();
       rb.gravityScale = 0f;
@@ -75,23 +76,27 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      //checking if unit is still alive
       if(currentHealth <= 0) Die();
+      //finding target
       target = FindNearestEnemy();
       attackBehavior.SetTarget(target);
 
+      //if there are no targets stop moving
       if(!target){
         rb.velocity = Vector2.zero;
         SetMoving(false);
         return;
       }
+
+      //behavior for stopping when in attack range
       float dist = Vector2.Distance(transform.position, target.position);
       float desiredRange = attackBehavior ? attackBehavior.Range : 0.5f;
 
       if(dist > desiredRange){
-
         Vector2 dir = (target.position - transform.position).normalized;
         rb.velocity = dir * moveSpeed;
-
+        //make sprite face direction its walking
         if(spriteRenderer && Mathf.Abs(dir.x) > 0.01f){
           bool movingRight = dir.x > 0f;
           spriteRenderer.flipX = (spriteFacesLeft != movingRight);
@@ -104,11 +109,11 @@ public class UnitController : MonoBehaviour
           spriteRenderer.flipX = (spriteFacesLeft != dir.x > 0f);
         }
         rb.velocity = Vector2.zero;
-        attackBehavior.Tick(Time.deltaTime);
         attackBehavior.TryAttack(target);
         SetMoving(false);
       }
-
+      //tick time for attack cooldown
+      attackBehavior.Tick(Time.deltaTime);[SerializeField]
     }
 
     void LateUpdate(){
@@ -135,12 +140,14 @@ public class UnitController : MonoBehaviour
       gameObject.SetActive(false);
     }
 
+    //unit targeting behavior
     Transform FindNearestEnemy(){
       GameObject[] enemies = GameObject.FindGameObjectsWithTag(targetTag);
       if (enemies == null) return null;
       Transform nearest = null;
       float best = Mathf.Infinity;
 
+      //targets the closest enemy in viscinity
       foreach(var e in enemies){
         if(targetBehavior == TargetType.Closest){
           float d = Vector2.Distance(transform.position, e.transform.position);
@@ -149,7 +156,8 @@ public class UnitController : MonoBehaviour
             nearest = e.transform;
           }
         }
-
+        
+        //targets enemy with the lowest current health
         if(targetBehavior == TargetType.LowestHealth){
           var enemy = e.GetComponent<UnitController>();
           if(enemy.currentHealth < best){
@@ -158,6 +166,7 @@ public class UnitController : MonoBehaviour
           }
         }
 
+        //targets unit with the most sustained damage (used for healing mostly)
         if(targetBehavior == TargetType.MostDamaged){
           var enemy = e.GetComponent<UnitController>();
           if((enemy.currentHealth/enemy.maxHealth) < best){
@@ -171,6 +180,7 @@ public class UnitController : MonoBehaviour
       return nearest;
     }
 
+    //used for walking animation
     void SetMoving(bool moving){
       if(isMoving == moving) return;
       
@@ -184,6 +194,7 @@ public class UnitController : MonoBehaviour
       }
     }
 
+    //used for refreshing between attacking and walking and idle animations
     void UpdateAnimation(){
       Sprite[] frames;
 
@@ -230,6 +241,7 @@ public class UnitController : MonoBehaviour
       spriteRenderer.sprite = attackFrames[0];
     }
 
+    //updates health and makes unit flash color.
     IEnumerator Flash(float amount, Color color){
       yield return new WaitForSeconds(0.25f);
       currentHealth -= amount;
