@@ -29,7 +29,7 @@ public class RangedAttack : AttackBehavior{
       line.SetPosition(0, transform.position);
       line.SetPosition(1, target.position);
     }else{
-      if(target == null){
+      if(target == null && laserOn == true){
         line.enabled = false;
       }
     }

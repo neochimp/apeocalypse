@@ -38,6 +38,7 @@ public class UnitController : MonoBehaviour
     private Rigidbody2D rb;
     private Transform target;
     private SpriteRenderer spriteRenderer;
+    private bar healthBar;
 
     private bool isMoving;
     private bool isAttacking;
@@ -50,7 +51,9 @@ public class UnitController : MonoBehaviour
       rb = GetComponent<Rigidbody2D>();
       rb.gravityScale = 0f;
       spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-
+      healthBar = GetComponentInChildren<bar>();
+      healthBar.MaxValue = maxHealth;
+      healthBar.Value = maxHealth;
 
       //first idle frame
       if(idleFrames != null && idleFrames.Length > 0){
@@ -114,15 +117,18 @@ public class UnitController : MonoBehaviour
 
     public void TakeDamage(float amount){
       StartCoroutine(Flash(amount, Color.red));
+      healthBar.Change(-amount);
     }
 
     public void HealDamage(float amount){
       if(currentHealth < maxHealth){  
         StartCoroutine(Flash(amount, Color.green));
+        healthBar.Change(-amount);
       }
       if(currentHealth > maxHealth){
         currentHealth = maxHealth;
       }
+      
     }
 
     void Die(){
