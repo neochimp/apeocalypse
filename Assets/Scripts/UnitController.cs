@@ -46,9 +46,15 @@ public class UnitController : MonoBehaviour
     private int attackFrame;
     private int currentFrame;
     private float timer;
+
+    public Vector2 assignedTile;
+    private Vector2 tilePosition;
+
+    private Main mainController; 
    
     //basic instantiations
     void Awake(){
+      mainController = Camera.main.GetComponent<Main>();
       rb = GetComponent<Rigidbody2D>();
       rb.gravityScale = 0f;
       spriteRenderer = GetComponentInChildren<SpriteRenderer>();
@@ -70,7 +76,6 @@ public class UnitController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -82,13 +87,28 @@ public class UnitController : MonoBehaviour
       target = FindNearestEnemy();
       attackBehavior.SetTarget(target);
 
-      //if there are no targets stop moving
-      if(!target){
-        rb.velocity = Vector2.zero;
-        SetMoving(false);
-        return;
+      //if there are no targets stop moving for gorillas, go home for humans
+      if(!target || !mainController.roundOn){
+        if(assignedTile != null){
+          Vector2 dir = (tilePosition - (Vector2)transform.position).normalized;
+          if(Vector2.Distance((Vector2)transform.position, tilePosition) <= 0.05f){
+            rb.velocity = Vector2.zero;
+            SetMoving(false);
+          }else{
+            rb.velocity = dir * moveSpeed;
+            SetMoving(true);
+            if(spriteRenderer && Mathf.Abs(dir.x) > 0.01f){
+              bool movingRight = dir.x > 0f;
+              spriteRenderer.flipX = (spriteFacesLeft != movingRight);
+            }
+          }
+          return;
+        }else{
+          rb.velocity = Vector2.zero;
+          SetMoving(false);
+          return;
+        }
       }
-
       //behavior for stopping when in attack range
       float dist = Vector2.Distance(transform.position, target.position);
       float desiredRange = attackBehavior ? attackBehavior.Range : 0.5f;
@@ -253,6 +273,21 @@ public class UnitController : MonoBehaviour
       yield return new WaitForSeconds(0.1f);
       spriteRenderer.color = Color.white;
 
+    }
+
+    public void AssignTile(int x, int y){
+      assignedTile = new Vector2(x+8f, y+5f);
+
+      tilePosition = new Vector2(x+0.5f,y);
+      Debug.Log("I should now move to: " +assignedTile);
+    }
+
+    public int oldX(){
+      return (int)assignedTile.x;
+    }
+
+    public int oldY(){
+      return (int)assignedTile.y;
     }
 
 }
