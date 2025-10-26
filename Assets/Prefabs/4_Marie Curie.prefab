@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3440957084977803561}
   - component: {fileID: 1568098156343104300}
   m_Layer: 3
-  m_Name: Marie Curie
+  m_Name: 4_Marie Curie
   m_TagString: Human
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

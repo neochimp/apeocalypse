@@ -8,6 +8,10 @@ public class Main : MonoBehaviour
   public int highScore;
   public GameObject gorilla;
 
+  public GameObject[] units;
+  private GameObject[] team;
+  private bool roundOn;
+  private int gorillaStock;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +22,10 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //spawnGorilla();
+      if(Input.GetKeyDown(KeyCode.Space)){
+        Debug.Log("Spacebar pressed");
+        StartCoroutine(StartRound());
+      } 
     }
 
 
@@ -44,7 +51,19 @@ public class Main : MonoBehaviour
       default:
         return Vector2.zero;
     }
-    
-  
   }
+  
+  IEnumerator StartRound(){
+    Debug.Log("Starting round: " + round);
+    gorillaStock = round;
+    while(gorillaStock > 0){
+      float randomWait = Random.Range(2f, 5f);
+      spawnGorilla();
+      yield return new WaitForSeconds(randomWait);
+      gorillaStock--;
+    }
+  }
+
 }
+
+

@@ -113,7 +113,7 @@ public class UnitController : MonoBehaviour
         SetMoving(false);
       }
       //tick time for attack cooldown
-      attackBehavior.Tick(Time.deltaTime);[SerializeField]
+      attackBehavior.Tick(Time.deltaTime);
     }
 
     void LateUpdate(){
@@ -149,6 +149,10 @@ public class UnitController : MonoBehaviour
 
       //targets the closest enemy in viscinity
       foreach(var e in enemies){
+        Renderer eRenderer = e.GetComponent<Renderer>();
+        if(!eRenderer.isVisible){
+          continue;
+        }
         if(targetBehavior == TargetType.Closest){
           float d = Vector2.Distance(transform.position, e.transform.position);
           if(d < best){

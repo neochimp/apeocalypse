@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1349893870799380474}
   - component: {fileID: 6066883233631805942}
   m_Layer: 3
-  m_Name: Miyamoto Musahi
+  m_Name: 2_Miyamoto Musahi
   m_TagString: Human
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4421794233688539456}
   - component: {fileID: 1692937975278240646}
   m_Layer: 3
-  m_Name: Muhammed Ali
+  m_Name: 1_Muhammed Ali
   m_TagString: Human
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
