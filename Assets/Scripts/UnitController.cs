@@ -48,7 +48,7 @@ public class UnitController : MonoBehaviour
     private float timer;
 
     public Vector2 assignedTile;
-    private Vector2 tilePosition;
+    public Vector2 tilePosition;
 
     private Main mainController; 
    
@@ -113,27 +113,29 @@ public class UnitController : MonoBehaviour
       float dist = Vector2.Distance(transform.position, target.position);
       float desiredRange = attackBehavior ? attackBehavior.Range : 0.5f;
 
-      if(dist > desiredRange){
-        Vector2 dir = (target.position - transform.position).normalized;
-        rb.velocity = dir * moveSpeed;
-        //make sprite face direction its walking
-        if(spriteRenderer && Mathf.Abs(dir.x) > 0.01f){
-          bool movingRight = dir.x > 0f;
-          spriteRenderer.flipX = (spriteFacesLeft != movingRight);
-        } 
+      if(mainController.roundOn){
+        if(dist > desiredRange){
+          Vector2 dir = (target.position - transform.position).normalized;
+          rb.velocity = dir * moveSpeed;
+          //make sprite face direction its walking
+          if(spriteRenderer && Mathf.Abs(dir.x) > 0.01f){
+            bool movingRight = dir.x > 0f;
+            spriteRenderer.flipX = (spriteFacesLeft != movingRight);
+          } 
 
-        SetMoving(true);
-      }else{
-        Vector2 dir = (target.position - transform.position).normalized;
-        if(Mathf.Abs(dir.x) > 0.01f){
-          spriteRenderer.flipX = (spriteFacesLeft != dir.x > 0f);
+          SetMoving(true);
+        }else{
+          Vector2 dir = (target.position - transform.position).normalized;
+          if(Mathf.Abs(dir.x) > 0.01f){
+            spriteRenderer.flipX = (spriteFacesLeft != dir.x > 0f);
+          }
+          rb.velocity = Vector2.zero;
+          attackBehavior.TryAttack(target);
+          SetMoving(false);
         }
-        rb.velocity = Vector2.zero;
-        attackBehavior.TryAttack(target);
-        SetMoving(false);
+        //tick time for attack cooldown
+        attackBehavior.Tick(Time.deltaTime);
       }
-      //tick time for attack cooldown
-      attackBehavior.Tick(Time.deltaTime);
     }
 
     void LateUpdate(){
@@ -157,7 +159,7 @@ public class UnitController : MonoBehaviour
     }
 
     void Die(){
-      gameObject.SetActive(false);
+      Destroy(gameObject);
     }
 
     //unit targeting behavior
@@ -277,7 +279,7 @@ public class UnitController : MonoBehaviour
 
     public void AssignTile(int x, int y){
       assignedTile = new Vector2(x+8f, y+5f);
-
+      
       tilePosition = new Vector2(x+0.5f,y);
       Debug.Log("I should now move to: " +assignedTile);
     }

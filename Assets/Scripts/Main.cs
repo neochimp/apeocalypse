@@ -5,32 +5,36 @@ using UnityEngine.EventSystems;
 
 public class Main : MonoBehaviour
 {
+  [Header("Game State Control")]
   public int round;
   public int highScore;
-  public GameObject gorilla;
+  public bool roundOn;
 
+
+  [Header("Unit Management")]
+  public GameObject gorilla;
   public GameObject[] units;
   private GameObject[] team;
-  public GameObject tileHighlight;
-  public bool roundOn;
-  private int gorillaStock;
-  private GameObject highlight;
   private GameObject[,] board = new GameObject[16,9];
-  public LayerMask draggableMask = ~3;
-  public Transform selectedObject;
-  public Rigidbody2D selectedBody;
-  public UnitController selectedController;
+
+  [Header("Tiling")]
+  public GameObject tileHighlight;
+  private GameObject highlight;
+  GameObject selectedObject;
+  Rigidbody2D selectedBody;
+  UnitController selectedController;
     // Start is called before the first frame update
     void Start()
     {
-        highlight = Instantiate(tileHighlight, Vector2.zero, Quaternion.identity);
+      //spawn a square that highlights tiles.
+      highlight = Instantiate(tileHighlight, Vector2.zero, Quaternion.identity);
     }
 
     // Update is called once per frame
     void Update()
     {
+      //start round shortcut 
       if(Input.GetKeyDown(KeyCode.Space)){
-        Debug.Log("Spacebar pressed");
         StartCoroutine(StartRound());
       } 
 
@@ -39,44 +43,49 @@ public class Main : MonoBehaviour
       Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
       mouseWorldPosition.z = 0f;
       Vector2 mouseWorld = new Vector2(mouseWorldPosition.x, mouseWorldPosition.y);
-      
+     
+      //only highlight tiles and allow the dragging of units if the round is not on
       if(!roundOn){
+        //math that makes the units stick to the center of the tiles
         highlight.SetActive(true);
         int tileX = (int)Mathf.Floor(mouseWorldPosition.x);
         int tileY = (int)Mathf.Floor(mouseWorldPosition.y+0.5f);
         highlight.transform.position = new Vector2((float)tileX+0.5f, (float)tileY); 
 
+        //if you click and you there is a unit there save the unit temporarily
         if(Input.GetMouseButtonDown(0)){
           Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
           if(hit != null){
-            selectedObject = hit.transform;
+            selectedObject = hit.gameObject;
             selectedBody = hit.attachedRigidbody;
-            selectedController = hit.GetComponent<UnitController>();
           }
         }
 
+        //Stick the clicked unit to the mouse for drag and drop behavior
         if(Input.GetMouseButton(0) && selectedObject){
           selectedBody.MovePosition(mouseWorldPosition);
         }
 
+        //When mouse is released, assign the unit to the new tile and clear what unit is being held
         if(Input.GetMouseButtonUp(0) && selectedObject){
-          if(board[tileX+8,tileY+5] == null){
-            board[selectedController.oldX(), selectedController.oldY()] = null;
-            selectedController.AssignTile(tileX, tileY);
-          }
+          assignUnitToTile(tileX, tileY, selectedObject);
           selectedObject = null;
           selectedBody = null;
-          selectedController = null;
         }
 
       }
+
+      //check to see if gorillas are all dead
+      checkRoundEnd();
     }
 
 
+  //gorilla spawner 
   void spawnGorilla(){
     GameObject newGorilla = Instantiate(gorilla, getRandomSpawnOutsideMap(Random.Range(1, 5)), Quaternion.identity);
   }
   
+  //used with gorilla spawner to spawn a gorilla in a random spot slightly out of view of the camera
   Vector2 getRandomSpawnOutsideMap(int side){
     float randomX, randomY;
     switch(side){
@@ -97,17 +106,43 @@ public class Main : MonoBehaviour
     }
   }
   
+  //Start the round, gorillas will spawn at an interval between 2-5 seconds. The number of gorillas scales with the round.
   IEnumerator StartRound(){
     Debug.Log("Starting round: " + round);
     roundOn = true;
-    gorillaStock = round;
+    int gorillaStock = round;
     while(gorillaStock > 0){
       float randomWait = Random.Range(2f, 5f);
       spawnGorilla();
       yield return new WaitForSeconds(randomWait);
       gorillaStock--;
     }
-    roundOn = false;
+  }
+
+  //if there are no more gorillas on the map the round ends
+  void checkRoundEnd(){
+    GameObject[] enemies = GameObject.FindGameObjectsWithTag("Gorilla");
+    if(enemies.Length == 0){
+      roundOn = false;
+      Debug.Log("Round ended");
+    }
+  }
+
+  //attempt to assign a unit to a new tile
+  void assignUnitToTile(int tileX, int tileY, GameObject selected){
+    UnitController selectedController = selected.GetComponent<UnitController>();
+    //if a unit doesnt already have that tile claimed,
+    if(board[tileX+8,tileY+5] == null){
+      //clear the old position
+      board[selectedController.oldX(), selectedController.oldY()] = null;
+      //claim the new position
+      board[tileX+8,tileY+5] = selected;
+      //assign the new tile
+      selectedController.AssignTile(tileX, tileY);
+    }else{
+      //if there is already a unit on the tile, go back to your home position.
+      selected.transform.position = selectedController.tilePosition;
+    }
   }
 
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 528131094432371469}
   - component: {fileID: 6769538126594798723}
   - component: {fileID: 7221372422008939205}
+  - component: {fileID: -3268523374422119793}
   m_Layer: 3
   m_Name: 0_Human
   m_TagString: Human
@@ -123,6 +124,7 @@ MonoBehaviour:
   spriteFacesLeft: 0
   attackBehavior: {fileID: 7221372422008939205}
   targetBehavior: 0
+  assignedTile: {x: 0, y: 0}
 --- !u!50 &6769538126594798723
 Rigidbody2D:
   serializedVersion: 4
@@ -168,6 +170,51 @@ MonoBehaviour:
   lungeDistance: 0.25
   lungeSpeed: 10
   returnSpeed: 10
+--- !u!61 &-3268523374422119793
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475502427507503367}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1001 &9219497266085419129
 PrefabInstance:
   m_ObjectHideFlags: 0

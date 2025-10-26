@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2619256854449274651}
   - component: {fileID: 8896107969686652022}
   - component: {fileID: 8594820800245111407}
+  - component: {fileID: 7727415970938716160}
   m_Layer: 3
   m_Name: 3_Michael Jordan
   m_TagString: Human
@@ -129,6 +130,7 @@ MonoBehaviour:
   spriteFacesLeft: 0
   attackBehavior: {fileID: 8594820800245111407}
   targetBehavior: 0
+  assignedTile: {x: 0, y: 0}
 --- !u!50 &8896107969686652022
 Rigidbody2D:
   serializedVersion: 4
@@ -175,6 +177,51 @@ MonoBehaviour:
   laserOn: 0
   laserColor: {r: 1, g: 0, b: 0, a: 1}
   laserWidth: 0.02
+--- !u!61 &7727415970938716160
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5892220545848359135}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 8
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 2
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1001 &5167554231049213072
 PrefabInstance:
   m_ObjectHideFlags: 0
