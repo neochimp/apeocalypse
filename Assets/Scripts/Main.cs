@@ -37,6 +37,11 @@ public class Main : MonoBehaviour
       if(Input.GetKeyDown(KeyCode.Space)){
         StartCoroutine(StartRound());
       } 
+      if(Input.GetKeyDown(KeyCode.S)){
+        spawnHuman(0);
+      }
+
+
 
       //highlighting tiles between rounds.
       Vector3 mouseScreenPosition = Input.mousePosition;
@@ -51,7 +56,8 @@ public class Main : MonoBehaviour
         int tileX = (int)Mathf.Floor(mouseWorldPosition.x);
         int tileY = (int)Mathf.Floor(mouseWorldPosition.y+0.5f);
         highlight.transform.position = new Vector2((float)tileX+0.5f, (float)tileY); 
-
+        
+        Debug.Log("Tile: " + tileX + ", " + tileY);
         //if you click and you there is a unit there save the unit temporarily
         if(Input.GetMouseButtonDown(0)){
           Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
@@ -68,7 +74,7 @@ public class Main : MonoBehaviour
 
         //When mouse is released, assign the unit to the new tile and clear what unit is being held
         if(Input.GetMouseButtonUp(0) && selectedObject){
-          assignUnitToTile(tileX, tileY, selectedObject);
+          assignUnitToTile(tileX+8, tileY+4, selectedObject);
           selectedObject = null;
           selectedBody = null;
         }
@@ -105,6 +111,19 @@ public class Main : MonoBehaviour
         return Vector2.zero;
     }
   }
+
+  //Human spawner
+  void spawnHuman(int id){
+    GameObject newHuman = Instantiate(units[id], Vector2.zero, Quaternion.identity);
+    int spawnX, spawnY;
+   
+    do{
+      spawnX = Random.Range(0, 15);
+      spawnY = Random.Range(0, 8);
+    }while(board[spawnX, spawnY] != null);
+
+    assignUnitToTile(spawnX, spawnY, newHuman);
+  }
   
   //Start the round, gorillas will spawn at an interval between 2-5 seconds. The number of gorillas scales with the round.
   IEnumerator StartRound(){
@@ -132,11 +151,11 @@ public class Main : MonoBehaviour
   void assignUnitToTile(int tileX, int tileY, GameObject selected){
     UnitController selectedController = selected.GetComponent<UnitController>();
     //if a unit doesnt already have that tile claimed,
-    if(board[tileX+8,tileY+5] == null){
+    if(board[tileX,tileY] == null){
       //clear the old position
       board[selectedController.oldX(), selectedController.oldY()] = null;
       //claim the new position
-      board[tileX+8,tileY+5] = selected;
+      board[tileX,tileY] = selected;
       //assign the new tile
       selectedController.AssignTile(tileX, tileY);
     }else{
@@ -144,6 +163,8 @@ public class Main : MonoBehaviour
       selected.transform.position = selectedController.tilePosition;
     }
   }
+
+
 
 }
 

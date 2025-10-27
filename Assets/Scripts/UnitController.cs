@@ -61,13 +61,13 @@ public class UnitController : MonoBehaviour
       healthBar = GetComponentInChildren<bar>();
       healthBar.MaxValue = maxHealth;
       healthBar.Value = maxHealth;
+      currentHealth = maxHealth;
 
       //first idle frame
       if(idleFrames != null && idleFrames.Length > 0){
         spriteRenderer.sprite = idleFrames[0];
       }
 
-      currentHealth = maxHealth;
       if(!attackBehavior){
         attackBehavior = GetComponent<AttackBehavior>(); //default attack behavior if one isn't found
       }
@@ -89,7 +89,9 @@ public class UnitController : MonoBehaviour
 
       //if there are no targets stop moving for gorillas, go home for humans
       if(!target || !mainController.roundOn){
+        //if the unit has an assigned tile
         if(assignedTile != null){
+          //go to the assigned position/ stop if close enough
           Vector2 dir = (tilePosition - (Vector2)transform.position).normalized;
           if(Vector2.Distance((Vector2)transform.position, tilePosition) <= 0.05f){
             rb.velocity = Vector2.zero;
@@ -97,6 +99,7 @@ public class UnitController : MonoBehaviour
           }else{
             rb.velocity = dir * moveSpeed;
             SetMoving(true);
+            //code for flipping sprite to walking direction
             if(spriteRenderer && Mathf.Abs(dir.x) > 0.01f){
               bool movingRight = dir.x > 0f;
               spriteRenderer.flipX = (spriteFacesLeft != movingRight);
@@ -104,7 +107,8 @@ public class UnitController : MonoBehaviour
           }
           return;
         }else{
-          rb.velocity = Vector2.zero;
+          //if no assigned position go to the center. 
+          rb.velocity = new Vector2(1.5f,1f);
           SetMoving(false);
           return;
         }
@@ -113,23 +117,28 @@ public class UnitController : MonoBehaviour
       float dist = Vector2.Distance(transform.position, target.position);
       float desiredRange = attackBehavior ? attackBehavior.Range : 0.5f;
 
+      //only attack if round is active
       if(mainController.roundOn){
+        //Get the direction unit needs to go for the target
+        Vector2 dir = (target.position - transform.position).normalized;
+        //if unit is farther than desired range
         if(dist > desiredRange){
-          Vector2 dir = (target.position - transform.position).normalized;
+          //go towards the target
           rb.velocity = dir * moveSpeed;
           //make sprite face direction its walking
           if(spriteRenderer && Mathf.Abs(dir.x) > 0.01f){
             bool movingRight = dir.x > 0f;
             spriteRenderer.flipX = (spriteFacesLeft != movingRight);
           } 
-
           SetMoving(true);
+          //if unit is in range
         }else{
-          Vector2 dir = (target.position - transform.position).normalized;
           if(Mathf.Abs(dir.x) > 0.01f){
             spriteRenderer.flipX = (spriteFacesLeft != dir.x > 0f);
           }
+          //stop moving
           rb.velocity = Vector2.zero;
+          //try attacking
           attackBehavior.TryAttack(target);
           SetMoving(false);
         }
@@ -142,16 +151,19 @@ public class UnitController : MonoBehaviour
       UpdateAnimation();
     }
 
+    //the unit takes damage and flashes red
     public void TakeDamage(float amount){
       StartCoroutine(Flash(amount, Color.red));
       healthBar.Change(-amount);
     }
 
+    //heal the unit and flash green
     public void HealDamage(float amount){
       if(currentHealth < maxHealth){  
         StartCoroutine(Flash(amount, Color.green));
         healthBar.Change(-amount);
       }
+      //do not let health exceed max
       if(currentHealth > maxHealth){
         currentHealth = maxHealth;
       }
@@ -206,6 +218,24 @@ public class UnitController : MonoBehaviour
       return nearest;
     }
 
+    //assign a new tile to the unit
+    public void AssignTile(int x, int y){
+      assignedTile = new Vector2(x, y);
+      
+      tilePosition = new Vector2(x-7.5f,y-4f);
+      Debug.Log("I should now move to: " +assignedTile);
+    }
+
+    //getters for the currently assigned tile. used for releasing old tile in 2d array
+    public int oldX(){
+      return (int)assignedTile.x;
+    }
+    public int oldY(){
+      return (int)assignedTile.y;
+    }
+
+
+//--------------------------------------Animation stuff--------------------------------
     //used for walking animation
     void SetMoving(bool moving){
       if(isMoving == moving) return;
@@ -275,21 +305,6 @@ public class UnitController : MonoBehaviour
       yield return new WaitForSeconds(0.1f);
       spriteRenderer.color = Color.white;
 
-    }
-
-    public void AssignTile(int x, int y){
-      assignedTile = new Vector2(x+8f, y+5f);
-      
-      tilePosition = new Vector2(x+0.5f,y);
-      Debug.Log("I should now move to: " +assignedTile);
-    }
-
-    public int oldX(){
-      return (int)assignedTile.x;
-    }
-
-    public int oldY(){
-      return (int)assignedTile.y;
     }
 
 }
