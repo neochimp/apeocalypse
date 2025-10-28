@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Human
   - Gorilla
+  - Coin
   layers:
   - Default
   - TransparentFX

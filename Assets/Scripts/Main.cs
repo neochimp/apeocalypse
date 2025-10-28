@@ -14,7 +14,9 @@ public class Main : MonoBehaviour
   public CharacterSelect selectMenu;
   public TextMeshProUGUI coinCount;
   public TextMeshProUGUI roundCount;
+  public TextMeshProUGUI highscore;
   public Transform DoneButton;
+  public Transform GameOver;
 
 
   [Header("Unit Management")]
@@ -30,15 +32,28 @@ public class Main : MonoBehaviour
   GameObject selectedObject;
   Rigidbody2D selectedBody;
   UnitController selectedController;
+
+  [Header("SFX")]
+  private AudioSource sfx;
+  public AudioClip buttonClick;
+  public AudioClip coinPickup;
+  public AudioClip roundStart;
+  public AudioClip dropUnit;
+  public AudioClip purchase;
+
     // Start is called before the first frame update
     void Start()
     {
       //spawn a square that highlights tiles.
+      GameOver.gameObject.SetActive(false);
       highlight = Instantiate(tileHighlight, Vector2.zero, Quaternion.identity);
       selectMenu.StartCharacterSelect(team);
       coinCount.text = $"{coins}";
       roundCount.text = $"Round: {round}";
-      //this.enabled = false;
+      highscore.text = $"Highscore: {highScore}";
+
+      sfx = gameObject.GetComponent<AudioSource>();
+
     }
 
     // Update is called once per frame
@@ -85,6 +100,7 @@ public class Main : MonoBehaviour
 
         //When mouse is released, assign the unit to the new tile and clear what unit is being held
         if(Input.GetMouseButtonUp(0) && selectedObject){
+          sfx.PlayOneShot(dropUnit);
           assignUnitToTile(tileX+8, tileY+4, selectedObject);
           selectedObject = null;
           selectedBody = null;
@@ -96,8 +112,7 @@ public class Main : MonoBehaviour
         Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
         if(hit != null && hit.gameObject.tag == "Coin"){
           hit.gameObject.GetComponent<Coin>().PickupCoin();
-          coins++;
-          coinCount.text = $"{coins}";
+          AddCoins(1);
         }
       }
 
@@ -107,7 +122,7 @@ public class Main : MonoBehaviour
 
 
   public void StartGame(){
-    //this.enabled = true;
+    sfx.PlayOneShot(buttonClick);
     int unitCount = 0;
     foreach(int id in team){
       //Debug.Log("Spawning: " + id);
@@ -164,6 +179,7 @@ public class Main : MonoBehaviour
   
   //Start the round, gorillas will spawn at an interval between 2-5 seconds. The number of gorillas scales with the round.
   IEnumerator StartRound(){
+    sfx.PlayOneShot(roundStart);
     activeSpawning = true;
     Debug.Log("Starting round: " + round);
     roundOn = true;
@@ -185,12 +201,35 @@ public class Main : MonoBehaviour
   //if there are no more gorillas on the map the round ends
   void checkRoundEnd(){
     GameObject[] enemies = GameObject.FindGameObjectsWithTag("Gorilla");
+    GameObject[] humans = GameObject.FindGameObjectsWithTag("Human");
     if(roundOn && enemies.Length == 0 && !activeSpawning){
       roundOn = false;
       round++;
       roundCount.text = $"Round: {round}";
       DoneButton.gameObject.SetActive(true);
     }
+    if(roundOn && humans.Length == 0){
+      roundOn = false;
+      GameOver.gameObject.SetActive(true);
+      foreach(GameObject gorilla in enemies){
+        Destroy(gorilla);
+      }
+      GameOver.gameObject.GetComponent<AudioSource>().Play();
+      if(round > highScore){
+        highScore = round;
+        highscore.text = $"Highscore: {highScore}";
+      }
+    }
+    
+  }
+
+  //function to start a new game.
+  public void newGame(){
+    sfx.PlayOneShot(buttonClick);
+    round = 1;
+    selectMenu.StartCharacterSelect(team);
+    GameOver.gameObject.SetActive(false);
+    DoneButton.gameObject.SetActive(true);
   }
 
   //attempt to assign a unit to a new tile
@@ -209,6 +248,19 @@ public class Main : MonoBehaviour
       selected.transform.position = selectedController.tilePosition;
     }
   }
+
+  public void AddCoins(int value){
+    coins += value;
+    coinCount.text = $"{coins}";
+    sfx.PlayOneShot(coinPickup);
+  }
+
+  public void SubCoins(int value){
+    coins -= value;
+    coinCount.text = $"{coins}";
+    sfx.PlayOneShot(purchase, 0.7f);
+  }
+
 
 
 

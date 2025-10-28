@@ -32,6 +32,7 @@ public class UnitController : MonoBehaviour
     public float frameRate = 0.1f;
     public bool spriteFacesLeft = false;  //used to correcet left and right facing depending on sprite
 
+    [Header("Controllers")]
     public AttackBehavior attackBehavior; //unique to each unit
     public TargetType targetBehavior; //see enum above
     public Coin coinController; //used for gorilla coin drops
@@ -41,6 +42,7 @@ public class UnitController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private bar healthBar;
 
+    //status tracking
     private bool isMoving;
     private bool isAttacking;
     private float attackAnimTimer;  //timer for attack animation
@@ -140,7 +142,7 @@ public class UnitController : MonoBehaviour
           //stop moving
           rb.velocity = Vector2.zero;
           //try attacking
-          attackBehavior.TryAttack(target);
+          attackBehavior.TryAttack(target, GetComponent<AudioSource>());
           SetMoving(false);
         }
         //tick time for attack cooldown

@@ -35,7 +35,6 @@ public class Coin : MonoBehaviour
     }
 
     public void PickupCoin(){
-
       Destroy(this.gameObject);
     }
 }

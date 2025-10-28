@@ -13,11 +13,12 @@ public abstract class AttackBehavior : MonoBehaviour{
     if(cdTimer < 0f) cdTimer = 0f;
   }
 
-  public bool TryAttack(Transform target){ 
+  public bool TryAttack(Transform target, AudioSource audio){ 
     if(cdTimer > 0f || !target) return false;
     if(!IsInRange(target)) return false;
 
     PerformAttack(target);
+    audio.Play();
     cdTimer = Cooldown;
     //Debug.Log($"ATTACK fired. Next ready in {Cooldown}s");
 
