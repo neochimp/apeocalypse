@@ -34,6 +34,7 @@ public class UnitController : MonoBehaviour
 
     public AttackBehavior attackBehavior; //unique to each unit
     public TargetType targetBehavior; //see enum above
+    public Coin coinController; //used for gorilla coin drops
 
     private Rigidbody2D rb;
     private Transform target;
@@ -171,6 +172,9 @@ public class UnitController : MonoBehaviour
     }
 
     void Die(){
+      if(this.gameObject.tag == "Gorilla"){
+        coinController.SpawnCoin(transform.position);
+      }
       Destroy(gameObject);
     }
 
@@ -223,7 +227,7 @@ public class UnitController : MonoBehaviour
       assignedTile = new Vector2(x, y);
       
       tilePosition = new Vector2(x-7.5f,y-4f);
-      Debug.Log("I should now move to: " +assignedTile);
+      //Debug.Log("I should now move to: " +assignedTile);
     }
 
     //getters for the currently assigned tile. used for releasing old tile in 2d array

@@ -13,7 +13,7 @@ public class HumanMeleeAttack : AttackBehavior{
     var controller = GetComponent<UnitController>();
     StartCoroutine(Lunge(target.position));
     if(enemy) enemy.TakeDamage(damage);
-    Debug.Log("Attacking " + enemy.name);
+    //Debug.Log("Attacking " + enemy.name);
   }
 
   private IEnumerator Lunge(Vector3 targetPos){

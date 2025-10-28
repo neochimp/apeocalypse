@@ -6,6 +6,6 @@ public class MeleeAttack : AttackBehavior{
   protected override void PerformAttack(Transform target){
     var enemy = target.GetComponent<UnitController>();
     if(enemy) enemy.TakeDamage(damage);
-    Debug.Log("Attacking " + enemy.name);
+    //Debug.Log("Attacking " + enemy.name);
   }
 }

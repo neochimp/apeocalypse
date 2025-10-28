@@ -169,6 +169,9 @@ MonoBehaviour:
   spriteFacesLeft: 1
   attackBehavior: {fileID: 3194889237657960803}
   targetBehavior: 0
+  coinController: {fileID: 1836231273899553898, guid: 439f886c88b81e0249efa1b2c7330dba, type: 3}
+  assignedTile: {x: 0, y: 0}
+  tilePosition: {x: 0, y: 0}
 --- !u!114 &3194889237657960803
 MonoBehaviour:
   m_ObjectHideFlags: 0

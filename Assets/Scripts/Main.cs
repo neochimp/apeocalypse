@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class Main : MonoBehaviour
 {
@@ -9,13 +10,19 @@ public class Main : MonoBehaviour
   public int round;
   public int highScore;
   public bool roundOn;
+  public int coins;
+  public CharacterSelect selectMenu;
+  public TextMeshProUGUI coinCount;
+  public TextMeshProUGUI roundCount;
+  public Transform DoneButton;
 
 
   [Header("Unit Management")]
   public GameObject gorilla;
   public GameObject[] units;
-  private GameObject[] team;
+  private HashSet<int> team = new HashSet<int>();
   private GameObject[,] board = new GameObject[16,9];
+  private bool activeSpawning;
 
   [Header("Tiling")]
   public GameObject tileHighlight;
@@ -28,6 +35,10 @@ public class Main : MonoBehaviour
     {
       //spawn a square that highlights tiles.
       highlight = Instantiate(tileHighlight, Vector2.zero, Quaternion.identity);
+      selectMenu.StartCharacterSelect(team);
+      coinCount.text = $"{coins}";
+      roundCount.text = $"Round: {round}";
+      //this.enabled = false;
     }
 
     // Update is called once per frame
@@ -57,7 +68,7 @@ public class Main : MonoBehaviour
         int tileY = (int)Mathf.Floor(mouseWorldPosition.y+0.5f);
         highlight.transform.position = new Vector2((float)tileX+0.5f, (float)tileY); 
         
-        Debug.Log("Tile: " + tileX + ", " + tileY);
+      roundCount.text = $"Round: {round}";
         //if you click and you there is a unit there save the unit temporarily
         if(Input.GetMouseButtonDown(0)){
           Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
@@ -79,6 +90,15 @@ public class Main : MonoBehaviour
           selectedBody = null;
         }
 
+        //coin collection behavior when round is active.
+      }else{
+        highlight.SetActive(false);
+        Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
+        if(hit != null && hit.gameObject.tag == "Coin"){
+          hit.gameObject.GetComponent<Coin>().PickupCoin();
+          coins++;
+          coinCount.text = $"{coins}";
+        }
       }
 
       //check to see if gorillas are all dead
@@ -86,6 +106,23 @@ public class Main : MonoBehaviour
     }
 
 
+  public void StartGame(){
+    //this.enabled = true;
+    int unitCount = 0;
+    foreach(int id in team){
+      //Debug.Log("Spawning: " + id);
+      spawnHuman(id);
+      unitCount++;
+    }
+    while(unitCount < 9){
+      spawnHuman(0);
+      unitCount++;
+    }
+  }
+
+  public void EndGame(){
+
+  }
   //gorilla spawner 
   void spawnGorilla(){
     GameObject newGorilla = Instantiate(gorilla, getRandomSpawnOutsideMap(Random.Range(1, 5)), Quaternion.identity);
@@ -127,6 +164,7 @@ public class Main : MonoBehaviour
   
   //Start the round, gorillas will spawn at an interval between 2-5 seconds. The number of gorillas scales with the round.
   IEnumerator StartRound(){
+    activeSpawning = true;
     Debug.Log("Starting round: " + round);
     roundOn = true;
     int gorillaStock = round;
@@ -136,14 +174,22 @@ public class Main : MonoBehaviour
       yield return new WaitForSeconds(randomWait);
       gorillaStock--;
     }
+    activeSpawning = false;
+  }
+
+  public void StartRoundButton(){
+    StartCoroutine(StartRound());
+    DoneButton.gameObject.SetActive(false);
   }
 
   //if there are no more gorillas on the map the round ends
   void checkRoundEnd(){
     GameObject[] enemies = GameObject.FindGameObjectsWithTag("Gorilla");
-    if(enemies.Length == 0){
+    if(roundOn && enemies.Length == 0 && !activeSpawning){
       roundOn = false;
-      Debug.Log("Round ended");
+      round++;
+      roundCount.text = $"Round: {round}";
+      DoneButton.gameObject.SetActive(true);
     }
   }
 

@@ -19,7 +19,7 @@ public abstract class AttackBehavior : MonoBehaviour{
 
     PerformAttack(target);
     cdTimer = Cooldown;
-    Debug.Log($"ATTACK fired. Next ready in {Cooldown}s");
+    //Debug.Log($"ATTACK fired. Next ready in {Cooldown}s");
 
     var controller = GetComponent<UnitController>();
     if(controller) controller.StartAttackAnimation();
