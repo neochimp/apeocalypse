@@ -12,6 +12,7 @@ public class Main : MonoBehaviour
   public bool roundOn;
   public int coins;
   public CharacterSelect selectMenu;
+  public Shop shopMenu;
   public TextMeshProUGUI coinCount;
   public TextMeshProUGUI roundCount;
   public TextMeshProUGUI highscore;
@@ -64,7 +65,7 @@ public class Main : MonoBehaviour
         StartCoroutine(StartRound());
       } 
       if(Input.GetKeyDown(KeyCode.S)){
-        spawnHuman(0);
+        shopMenu.OpenShop();
       }
 
 
@@ -121,6 +122,7 @@ public class Main : MonoBehaviour
     }
 
 
+  //starts the game and spawns your team. Fills empty slots with basic human.
   public void StartGame(){
     sfx.PlayOneShot(buttonClick);
     int unitCount = 0;
@@ -204,10 +206,14 @@ public class Main : MonoBehaviour
     GameObject[] humans = GameObject.FindGameObjectsWithTag("Human");
     if(roundOn && enemies.Length == 0 && !activeSpawning){
       roundOn = false;
+      if(round == 3){
+        //shopMenu.OpenShop();
+      }
       round++;
       roundCount.text = $"Round: {round}";
       DoneButton.gameObject.SetActive(true);
     }
+    //checking if all humans have died.for game over.
     if(roundOn && humans.Length == 0){
       roundOn = false;
       GameOver.gameObject.SetActive(true);
@@ -249,6 +255,7 @@ public class Main : MonoBehaviour
     }
   }
 
+  //setters for currency/bananas
   public void AddCoins(int value){
     coins += value;
     coinCount.text = $"{coins}";
