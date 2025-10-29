@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6074600880835628744}
   - component: {fileID: 8869157413196392968}
   - component: {fileID: 2515639862854323835}
-  - component: {fileID: 5537173653742473773}
+  - component: {fileID: 5721285804404305686}
   m_Layer: 3
   m_Name: 7_Mother_Theresa
   m_TagString: Human
@@ -211,7 +211,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!82 &5537173653742473773
+--- !u!82 &5721285804404305686
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,15 +221,15 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 531ec8f4fdd4e7a4a93709cd5b737a80, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ecfbac87ad69e4b1d83036d7c1d52b21, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.723
-  m_Pitch: 0
+  m_Volume: 0.763
+  m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 123
+  Priority: 128
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500

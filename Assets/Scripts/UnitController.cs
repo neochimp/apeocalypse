@@ -142,7 +142,7 @@ public class UnitController : MonoBehaviour
           //stop moving
           rb.velocity = Vector2.zero;
           //try attacking
-          attackBehavior.TryAttack(target, GetComponent<AudioSource>());
+          attackBehavior.TryAttack(target, this.GetComponent<AudioSource>());
           SetMoving(false);
         }
         //tick time for attack cooldown
