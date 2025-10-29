@@ -1,9 +1,9 @@
-Overall, I was able to implement almost everything I wanted to include in the game. I realized quickly that my task was somewhat ambitious given the heavy coding required for the autobattling behavior and unit management.
+Overall, I was able to implement almost everything I wanted to include in the game. I realized quickly that my task was somewhat ambitious given the heavy coding required for the auto-battling behavior and unit management.
 
-Because of the complications with the technical programming, I wasn't able to implement as many characters as I had wanted to (only got to 8 functionally unique units). However, I am pleased to get to somewhat complex units and to get different unit types such as melee, ranged, aoe, and healing. Additionally, I have a strong foundation with modular classes, so future implementation of new unique characters would be substantially faster.
+Because of the complications with the technical programming, I wasn't able to implement as many characters as I had wanted to (only got to 8 functionally unique units). However, I am pleased to get to somewhat complex units and to get different unit types such as melee, ranged, AoE, and healing. Additionally, I have a strong foundation with modular classes, so future implementation of new unique characters would be substantially faster.
 
 I did not get to implement synergies, different gorilla types, or a fully fleshed out shop system, but these were all extra additions and not part of my minimum viable product.
 
 I also deviated a bit from my original documentation about the user interaction during rounds, I wanted to make the game feel a little more interactive so the player has to manually pick up the coins/bananas with the mouse.
 
-All of my units have unique sound effects. I also added sound effects for the UI interaction. I did not end up adding game music due to time and also being told to not to overcrowd the audio. I originally wanted to add a few varying sound effects for the gorillas but did not have the time to get to that.
+All of my completed units have unique sound effects. I also added sound effects for the UI interaction. I did not end up adding game music due to time constraints and also being told to not to overcrowd the audio. I originally wanted to add a few varying sound effects for the gorillas but did not have the time to get to that.
