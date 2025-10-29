@@ -64,18 +64,21 @@ public class Main : MonoBehaviour
       if(Input.GetKeyDown(KeyCode.Space)){
         StartCoroutine(StartRound());
       } 
-      if(Input.GetKeyDown(KeyCode.S)){
-        shopMenu.OpenShop();
+      if(Input.GetKeyDown(KeyCode.G)){
+        AddCoins(99);
+
       }
 
 
 
       //highlighting tiles between rounds.
+      //mouse positioning info
       Vector3 mouseScreenPosition = Input.mousePosition;
       Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(mouseScreenPosition);
       mouseWorldPosition.z = 0f;
       Vector2 mouseWorld = new Vector2(mouseWorldPosition.x, mouseWorldPosition.y);
-     
+    
+      Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
       //only highlight tiles and allow the dragging of units if the round is not on
       if(!roundOn){
         //math that makes the units stick to the center of the tiles
@@ -84,11 +87,10 @@ public class Main : MonoBehaviour
         int tileY = (int)Mathf.Floor(mouseWorldPosition.y+0.5f);
         highlight.transform.position = new Vector2((float)tileX+0.5f, (float)tileY); 
         
-      roundCount.text = $"Round: {round}";
+        roundCount.text = $"Round: {round}";
         //if you click and you there is a unit there save the unit temporarily
         if(Input.GetMouseButtonDown(0)){
-          Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
-          if(hit != null){
+          if(hit != null && hit.gameObject.tag == "Human"){
             selectedObject = hit.gameObject;
             selectedBody = hit.attachedRigidbody;
           }
@@ -107,15 +109,15 @@ public class Main : MonoBehaviour
           selectedBody = null;
         }
 
-        //coin collection behavior when round is active.
       }else{
         highlight.SetActive(false);
-        Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
-        if(hit != null && hit.gameObject.tag == "Coin"){
-          hit.gameObject.GetComponent<Coin>().PickupCoin();
-          AddCoins(1);
-        }
       }
+      //coin collection behavior.
+      if(hit != null && hit.gameObject.tag == "Coin"){
+        hit.gameObject.GetComponent<Coin>().PickupCoin();
+        AddCoins(1);
+      }
+
 
       //check to see if gorillas are all dead
       checkRoundEnd();
@@ -172,8 +174,8 @@ public class Main : MonoBehaviour
     int spawnX, spawnY;
    
     do{
-      spawnX = Random.Range(0, 15);
-      spawnY = Random.Range(0, 8);
+      spawnX = Random.Range(5, 10);
+      spawnY = Random.Range(2, 6);
     }while(board[spawnX, spawnY] != null);
 
     assignUnitToTile(spawnX, spawnY, newHuman);
@@ -206,8 +208,9 @@ public class Main : MonoBehaviour
     GameObject[] humans = GameObject.FindGameObjectsWithTag("Human");
     if(roundOn && enemies.Length == 0 && !activeSpawning){
       roundOn = false;
-      if(round == 3){
-        //shopMenu.OpenShop();
+      if(round%3==0){
+        shopMenu.restock();
+        shopMenu.OpenShop();
       }
       round++;
       roundCount.text = $"Round: {round}";
@@ -259,7 +262,7 @@ public class Main : MonoBehaviour
   public void AddCoins(int value){
     coins += value;
     coinCount.text = $"{coins}";
-    sfx.PlayOneShot(coinPickup);
+    sfx.PlayOneShot(coinPickup, 0.4f);
   }
 
   public void SubCoins(int value){

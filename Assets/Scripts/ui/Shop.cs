@@ -11,6 +11,13 @@ public class Shop : MonoBehaviour
     public TextMeshProUGUI healCost;
     public TextMeshProUGUI dmgCost;
     public TextMeshProUGUI rezCost;
+
+    public GameObject pot1;
+    public GameObject pot2;
+    public GameObject pot3;
+
+    public string[] ShopkeeperLines;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,11 +34,14 @@ public class Shop : MonoBehaviour
     
     public void OpenShop(){
       this.gameObject.SetActive(true);
+      this.GetComponent<AudioSource>().Play();
       StartCoroutine(OpenShopRoutine()); 
     }
 
     public void CloseShop(){
       this.gameObject.SetActive(false);
+      shopkeep.position = new Vector2(2620f, 400f);
+      shopText.text = "";
     }
     
     private IEnumerator OpenShopRoutine(){
@@ -43,9 +53,14 @@ public class Shop : MonoBehaviour
       }
 
       rb.velocity = Vector2.zero;
-      shopText.text = "Welcome shop... Gorillas? Don't care... Me Want Banana.";
+      shopText.text = ShopkeeperLines[(int)Random.Range(0, 5)];
     }
 
+    public void restock(){
+      pot1.SetActive(true);
+      pot2.SetActive(true);
+      pot3.SetActive(true);
+    }
     public void healPotion(){
       if(main.coins >= 1){
         main.SubCoins(1);
